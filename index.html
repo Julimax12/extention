@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extension Manager</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="dark-theme">
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <div class="header-icon">
+                    <i class="fas fa-cog"></i>
+                </div>
+                <div class="header-text">
+                    <h1>Extensions</h1>
+                    <p>Manage your browser extensions</p>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="theme-selector">
+                    <button class="theme-btn" id="themeBtn">
+                        <i class="fas fa-moon"></i>
+                        <span class="theme-text">Dark</span>
+                    </button>
+                    <div class="theme-dropdown" id="themeDropdown">
+                        <div class="theme-option" data-theme="light">
+                            <i class="fas fa-sun"></i>
+                            <span>Light</span>
+                        </div>
+                        <div class="theme-option" data-theme="dark">
+                            <i class="fas fa-moon"></i>
+                            <span>Dark</span>
+                        </div>
+                        <div class="theme-option" data-theme="system">
+                            <i class="fas fa-desktop"></i>
+                            <span>System</span>
+                        </div>
+                    </div>
+                </div>
+                <button class="close-btn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Search Bar -->
+        <div class="search-container">
+            <div class="search-box">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" id="searchInput" placeholder="Search extensions..." class="search-input">
+            </div>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="filter-tabs">
+            <button class="filter-tab active" data-filter="all">
+                All
+                <span class="filter-badge" id="allCount">12</span>
+            </button>
+            <button class="filter-tab" data-filter="active">
+                Active
+                <span class="filter-badge" id="activeCount">8</span>
+            </button>
+            <button class="filter-tab" data-filter="inactive">
+                Inactive
+                <span class="filter-badge" id="inactiveCount">4</span>
+            </button>
+        </div>
+
+        <!-- Extensions Grid -->
+        <div class="extensions-grid" id="extensionsGrid">
+            <!-- Extensions will be dynamically inserted here -->
+        </div>
+
+        <!-- Empty State -->
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <div class="empty-icon">
+                <i class="fas fa-search"></i>
+            </div>
+            <h3>No extensions found</h3>
+            <p id="emptyMessage">No extensions found for the selected filter.</p>
+            <button class="clear-search-btn" id="clearSearchBtn" style="display: none;">
+                Clear search
+            </button>
+        </div>
+
+        <!-- Stats Footer -->
+        <footer class="stats-footer">
+            <div class="stat-item">
+                <div class="stat-dot active"></div>
+                <span id="activeStatCount">8 Active</span>
+            </div>
+            <div class="stat-item">
+                <div class="stat-dot inactive"></div>
+                <span id="inactiveStatCount">4 Inactive</span>
+            </div>
+            <div class="stat-item">
+                <div class="stat-dot total"></div>
+                <span id="totalStatCount">12 Total Extensions</span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Extension Details Modal -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-container">
+            <div class="modal-header">
+                <div class="modal-title-section">
+                    <div class="modal-extension-icon" id="modalIcon"></div>
+                    <div>
+                        <h2 class="modal-title" id="modalTitle">Extension Name</h2>
+                        <p class="modal-subtitle" id="modalSubtitle">Category • Version 1.0.0</p>
+                    </div>
+                </div>
+                <button class="modal-close-btn" id="modalCloseBtn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="modal-content">
+                <!-- Extension Status -->
+                <div class="modal-section">
+                    <div class="section-header">
+                        <h3>Status</h3>
+                        <div class="extension-toggle modal-toggle" id="modalToggle">
+                        </div>
+                    </div>
+                    <div class="status-info">
+                        <div class="status-indicator" id="modalStatusIndicator">
+                            <div class="status-dot" id="modalStatusDot"></div>
+                            <span class="status-text" id="modalStatusText">Active</span>
+                        </div>
+                        <p class="status-description" id="modalStatusDescription">
+                            This extension is currently active and running.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Extension Description -->
+                <div class="modal-section">
+                    <h3>Description</h3>
+                    <p class="extension-full-description" id="modalDescription">
+                        Full extension description will appear here...
+                    </p>
+                </div>
+
+                <!-- Extension Details -->
+                <div class="modal-section">
+                    <h3>Details</h3>
+                    <div class="details-grid">
+                        <div class="detail-item">
+                            <span class="detail-label">Version</span>
+                            <span class="detail-value" id="modalVersion">1.0.0</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Category</span>
+                            <span class="detail-value" id="modalCategory">Developer Tools</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Size</span>
+                            <span class="detail-value" id="modalSize">2.4 MB</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Last Updated</span>
+                            <span class="detail-value" id="modalLastUpdated">2 days ago</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Developer</span>
+                            <span class="detail-value" id="modalDeveloper">Extension Developer</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Rating</span>
+                            <div class="rating-stars" id="modalRating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                                <span class="rating-text">4.5 (1,234)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Permissions -->
+                <div class="modal-section">
+                    <h3>Permissions</h3>
+                    <div class="permissions-list" id="modalPermissions">
+                        <!-- Permissions will be dynamically added -->
+                    </div>
+                </div>
+
+                <!-- Settings -->
+                <div class="modal-section">
+                    <h3>Settings</h3>
+                    <div class="settings-list" id="modalSettings">
+                        <!-- Settings will be dynamically added -->
+                    </div>
+                </div>
+
+                <!-- Usage Statistics -->
+                <div class="modal-section">
+                    <h3>Usage Statistics</h3>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number" id="modalUsageTime">24h</div>
+                            <div class="stat-label">Active Time Today</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="modalUsageCount">156</div>
+                            <div class="stat-label">Times Used This Week</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="modalDataSaved">2.3MB</div>
+                            <div class="stat-label">Data Processed</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="modalRemoveBtn">
+                    <i class="fas fa-trash-alt"></i>
+                    Remove Extension
+                </button>
+                <div class="modal-footer-right">
+                    <button class="btn btn-outline" id="modalOptionsBtn">
+                        <i class="fas fa-cog"></i>
+                        Options
+                    </button>
+                    <button class="btn btn-primary" id="modalSaveBtn">
+                        <i class="fas fa-save"></i>
+                        Save Changes
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
